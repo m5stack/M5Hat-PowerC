@@ -1,11 +1,24 @@
-// Download the required library functions https://github.com/m5stack/M5_IP5209
+/*
+*******************************************************************************
+* Copyright (c) 2022 by M5Stack
+*                  Equipped with M5StickC sample source code
+*                          配套  M5StickC 示例源代码
+* Visit for more information: https://docs.m5stack.com/en/hat/hat-powerc
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/hat/hat-powerc
+*
+* Product: PowerC HAT
+* Date: 2022/07/19
+*******************************************************************************
+  Read battery current and voltage information such as whether it is charging or
+  not
+  读取电池电流电压是否充电等信息
+*/
 #include <M5StickC.h>
-#include <Wire.h>
 
-#include "M5_IP5209.h"
+#include "Hat_PowerC.h"
 TFT_eSprite canvas = TFT_eSprite(&M5.Lcd);
 
-M5_IP5209 powerc;
+PowerC powerc;
 
 void setup() {
     M5.begin();

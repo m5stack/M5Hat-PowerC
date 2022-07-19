@@ -1,14 +1,14 @@
 {
-  "name": "M5_IP5209",
-  "description": "Library for M5Stack IP5209",
-  "keywords": "M5Stack PowerC",
+  "name": "M5Hat-PowerC",
+  "description": "Library for M5Stack Hat PowerC",
+  "keywords": "M5Stack Hat PowerC IP5209",
   "authors": {
     "name": "M5Stack",
     "url": "http://www.m5stack.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/m5stack/M5_IP5209.git"
+    "url": "https://github.com/m5stack/M5Hat-PowerC.git"
   },
   "version": "0.0.1",
   "frameworks": "arduino",

@@ -1,6 +1,8 @@
-#include "M5_IP5209.h"
+#include "Hat_PowerC.h"
 
-bool M5_IP5209::begin(TwoWire *wire, uint8_t sda, uint8_t scl, uint8_t addr) {
+/*! @brief Initialize the hardware.
+    @return True if the init was successful, otherwise false.. */
+bool PowerC::begin(TwoWire *wire, uint8_t sda, uint8_t scl, uint8_t addr) {
     _wire = wire;
     _addr = addr;
     _sda  = sda;
@@ -15,8 +17,10 @@ bool M5_IP5209::begin(TwoWire *wire, uint8_t sda, uint8_t scl, uint8_t addr) {
     }
 }
 
-bool M5_IP5209::writeBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
-                           uint8_t length) {
+/*! @brief Write a certain length of data to the specified register address.
+    @return True if the write was successful, otherwise false.. */
+bool PowerC::writeBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
+                        uint8_t length) {
     _wire->beginTransmission(addr);
     _wire->write(reg);
     for (int i = 0; i < length; i++) {
@@ -26,8 +30,10 @@ bool M5_IP5209::writeBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
     return false;
 }
 
-bool M5_IP5209::readBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
-                          uint8_t length) {
+/*! @brief Read a certain length of data to the specified register address.
+    @return True if the read was successful, otherwise false.. */
+bool PowerC::readBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
+                       uint8_t length) {
     uint8_t index = 0;
     _wire->beginTransmission(addr);
     _wire->write(reg);
@@ -41,18 +47,18 @@ bool M5_IP5209::readBytes(uint8_t addr, uint8_t reg, uint8_t *buffer,
     return false;
 }
 
-int M5_IP5209::getBatVAdc() {
+int PowerC::getBatVAdc() {
     uint8_t data[2];
-    if (readBytes(M5_IP5209_ADDRESS, M5_IP5209_BAT_VADC_REG, data, 2)) {
+    if (readBytes(PowerC_ADDRESS, PowerC_BAT_VADC_REG, data, 2)) {
         uint16_t voltage_h = data[1] & 0x3f;
         return (voltage_h << 8) | data[0];
     }
     return -1;
 }
 
-int M5_IP5209::getBatIAdc() {
+int PowerC::getBatIAdc() {
     uint8_t data[2];
-    if (readBytes(M5_IP5209_ADDRESS, M5_IP5209_BAT_IADC_REG, data, 2)) {
+    if (readBytes(PowerC_ADDRESS, PowerC_BAT_IADC_REG, data, 2)) {
         if ((data[1] & 0x20) == 0x20) {
             charged       = false;
             uint8_t temp1 = ~data[1];
@@ -67,16 +73,16 @@ int M5_IP5209::getBatIAdc() {
     return -1;
 }
 
-int M5_IP5209::getBatOCV() {
+int PowerC::getBatOCV() {
     uint8_t data[2];
-    if (readBytes(M5_IP5209_ADDRESS, M5_IP5209_BAT_OCV_REG, data, 2)) {
+    if (readBytes(PowerC_ADDRESS, PowerC_BAT_OCV_REG, data, 2)) {
         uint16_t voltage_h = data[1] & 0x3f;
         return (voltage_h << 8) | data[0];
     }
     return -1;
 }
 
-bool M5_IP5209::getBatVoltage() {
+bool PowerC::getBatVoltage() {
     uint16_t _bat_voltage_adc = getBatVAdc();
     if (_bat_voltage_adc != -1) {
         voltage = _bat_voltage_adc * 0.00026855 + 2.6;
@@ -85,7 +91,7 @@ bool M5_IP5209::getBatVoltage() {
     return false;
 }
 
-bool M5_IP5209::getBatCurrent() {
+bool PowerC::getBatCurrent() {
     uint16_t _bat_current_adc = getBatIAdc();
     if (_bat_current_adc != -1) {
         current = _bat_current_adc * 0.745985;
@@ -95,7 +101,7 @@ bool M5_IP5209::getBatCurrent() {
     }
 }
 
-bool M5_IP5209::update() {
+bool PowerC::update() {
     if (getBatCurrent() && getBatVoltage()) {
         power = voltage * current / 1000;
         return true;
