@@ -11,7 +11,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "Pins_Arduino.h"
+#include "pins_arduino.h"
 
 #define PowerC_ADDRESS      0x75
 #define PowerC_BAT_VADC_REG 0xa2
